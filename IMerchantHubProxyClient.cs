@@ -1,5 +1,6 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using MerchantHub.Connector.Proxy.Api.Endpoints.Auth.Token;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Check;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Delete;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Dms.Complete;
@@ -106,5 +107,13 @@ namespace MerchantHub.Connector.Proxy.Api
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public Task<OperationResult<BaseResult?>> PayAsync(PayRequest request, CancellationToken cancellationToken = default);
+
+        /// <summary>
+        ///     Generate access token
+        /// </summary>
+        /// <param name="request"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public Task<OperationResult<GenerateTokenResult?>>  GenerateTokenAsync(GenerateTokenRequest request, CancellationToken cancellationToken = default);
     }
 }
