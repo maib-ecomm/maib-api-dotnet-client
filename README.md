@@ -149,8 +149,7 @@ EXAMPLES
                         Id = "Item id", //optional
                         Name = "Item name", //optional
                         Price = 20.0m, //optional
-                        Quantity = 2, //optional
-                        Total = 40.0m //optional
+                        Quantity = 2 //optional
                     }
                 }
             };
@@ -202,8 +201,7 @@ First step
                         Id = "Item id", //optional
                         Name = "Item name", //optional
                         Price = 20.0m, //optional
-                        Quantity = 2, //optional
-                        Total = 40.0m //optional
+                        Quantity = 2 //optional
                     }
                 }
             };
@@ -287,8 +285,7 @@ Save card
                         Id = "Item id", //optional
                         Name = "Item name", //optional
                         Price = 20.0m, //optional
-                        Quantity = 2, //optional
-                        Total = 40.0m //optional
+                        Quantity = 2 //optional
                     }
                 },
                 BillerExpiry = "Your card expiration date"
@@ -334,8 +331,7 @@ Execute one-click payments
                         Id = "Item id", //optional
                         Name = "Item name", //optional
                         Price = 20.0m, //optional
-                        Quantity = 2, //optional
-                        Total = 40.0m //optional
+                        Quantity = 2 //optional
                     }
                 },
                 BillerId = Guid.NewGuid()//this is sent to the callback url that was setted on save one click request in case if the user selected savecard on checkout form
@@ -387,8 +383,7 @@ Save recurring
                         Id = "Item id", //optional
                         Name = "Item name", //optional
                         Price = 20.0m, //optional
-                        Quantity = 2, //optional
-                        Total = 40.0m //optional
+                        Quantity = 2 //optional
                     }
                 },
                 BillerExpiry = "Your card expiration date"
@@ -430,8 +425,7 @@ Execute recurring
                         Id = "Item id", //optional
                         Name = "Item name", //optional
                         Price = 20.0m, //optional
-                        Quantity = 2, //optional
-                        Total = 40.0m //optional
+                        Quantity = 2 //optional
                     }
                 },
                 BillerId = Guid.NewGuid()//this is sent to the callback url that was setted on save one click request in case if the user selected savecard on checkout form
