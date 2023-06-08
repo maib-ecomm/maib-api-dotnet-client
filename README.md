@@ -1,4 +1,4 @@
-# MAIB MerchantProxy .NET SDK
+# MAIB api .NET client
 [![N|Solid](https://www.maib.md/images/logo.svg)](https://www.maib.md)
 
 
@@ -17,10 +17,10 @@ CONTENTS OF THIS FILE
 INTRODUCTION
 ============
 
-The MAIB MerchantProxy .NET SDK is used to easily integrate the MAIB MerchantProxy into your project.
+The MAIB api .NET client is used to easily integrate the MAIB MerchantProxy into your project.
 Based on the .NET Core Libraries to connect and process the requests with the Bank server.
 
-The MAIB MerchantProxy .NET SDK has 4 ways of payment.
+The MAIB api .NET client has 4 ways of payment.
  * Direct payment (`PayAsync`). When the client's money transfers on the merchant account instantly when the user do the payment. This way is recommended use.
  * 2 step payment (`HoldDmsPaymentAsync`, `CompleteDmsPaymentAsync`). This type of transaction is executed in two steps. First payment needs to be initiated with `HoldDmsPaymentAsync` then completed with `CompleteDmsPaymentAsync`.
  * One-Click payment (`SaveOneClickPaymentAsync`, `ExecuteOneClickPaymentAsync`). This type of transaction allow user to save the card for latter use. First user need to save the card by `SaveOneClickPaymentAsync` on check-out form should select save card then user cand execute oneclick payments by `ExecuteOneClickPaymentAsync` with the `BillerId` property.
