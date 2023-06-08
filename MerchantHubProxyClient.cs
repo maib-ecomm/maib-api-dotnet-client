@@ -1,19 +1,18 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Auth.Token;
+﻿using MerchantHub.Connector.Proxy.Api.Endpoints.Auth.Token;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Check;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Delete;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Dms.Complete;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Dms.Hold;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.OneClick.Execute;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.OneClick.Save;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.PayByLink;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Recurring.SaveRecurring;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Recurring.Template;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Refund;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Sms;
 using MerchantHub.Connector.Proxy.Api.Http.Interfaces;
 using MerchantHub.Connector.Proxy.Api.Models;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MerchantHub.Connector.Proxy.Api
 {
@@ -57,11 +56,6 @@ namespace MerchantHub.Connector.Proxy.Api
         {
             return await _client.SendAsync<OperationResult<BaseResult?>, SaveOneClickRequest>(request,
                 cancellationToken);
-        }
-
-        public async Task<OperationResult<BaseResult?>> PayByLinkAsync(PayByLinkRequest request, CancellationToken cancellationToken = default)
-        {
-            return await _client.SendAsync<OperationResult<BaseResult?>, PayByLinkRequest>(request, cancellationToken);
         }
 
         public async Task<OperationResult<BaseResult?>> SaveRecurringPaymentAsync(SaveRecurringRequest request, CancellationToken cancellationToken = default)

@@ -7,7 +7,6 @@ using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Dms.Complete;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Dms.Hold;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.OneClick.Execute;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.OneClick.Save;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.PayByLink;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Recurring.SaveRecurring;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Recurring.Template;
 using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Refund;
@@ -66,14 +65,6 @@ namespace MerchantHub.Connector.Proxy.Api
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
         public Task<OperationResult<BaseResult?>> SaveOneClickPaymentAsync(SaveOneClickRequest request, CancellationToken cancellationToken = default);
-
-        /// <summary>
-        ///     Pay by link
-        /// </summary>
-        /// <param name="request"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        public Task<OperationResult<BaseResult?>> PayByLinkAsync(PayByLinkRequest request, CancellationToken cancellationToken = default);
 
         /// <summary>
         ///     Save request payment

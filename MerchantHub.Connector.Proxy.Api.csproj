@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
@@ -6,7 +6,7 @@
 		<NoWarn>CS8618;CS1591</NoWarn>
 		<PackageId>MerchantHub.Connector.Proxy.Api</PackageId>
 		<Title>MerchantHub Connector Proxy Api</Title>
-		<Version>1.0.1</Version>
+		<Version>1.0.2</Version>
 		<Copyright>MAIB</Copyright>
 		<PackageTags>maib</PackageTags>
 		<Authors>Ursu Nicolae</Authors>
