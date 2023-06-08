@@ -6,7 +6,7 @@ namespace MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Delete
 {
     public sealed class DeleteRequest : BaseRequest
     {
-        protected override string Action => "/v1/delete-card/{billerId}";
+        protected override string Action => "/v1/delete-card/{0}";
 
         protected override HttpMethod HttpMethod => HttpMethod.Delete;
 
