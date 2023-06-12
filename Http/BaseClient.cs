@@ -82,7 +82,8 @@ namespace MerchantHub.Connector.Proxy.Api.Http
                 if (string.IsNullOrEmpty(responseJson))
                     throw new ApplicationException("An empty response was received. StatusCode is " + httpStatusCode);
 
-                var errorResponse = Serializer.DeserializeString<ErrorResultModel>(responseJson);
+                var response = Serializer.DeserializeString<OperationResult<object?>>(responseJson);
+                var errorResponse = response.Errors[0];
 
                 var exception = new StatusCodeException("Response status code does not indicate success: " + httpStatusCode)
                 {
