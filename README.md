@@ -19,7 +19,7 @@ INTRODUCTION
 
 The maib api .NET client is a .NET Core based library used to easily integrate the maib ecomm API into your project.
 
-The MAIB api .NET client has 4 payment methods.
+The maib api .NET client has 4 payment methods.
  * Direct payment (`PayAsync`) - the customer's money is transferred to the merchant account instantly when the customer makes a payment. This method is preferred.
  * 2 step payment (`HoldDmsPaymentAsync`, `CompleteDmsPaymentAsync`) - this type of transaction occurs in two stages. The payment must first be initiated using `HoldDmsPaymentAsync` and then completed using `CompleteDmsPaymentAsync`.
  * Recurring payment(`SaveRecurringPaymentAsync`, `ExecuteRecurringPaymentAsync`) - this type of transaction allows customer to save the card for later use. Transaction must be initiated with `SaveRecurringPaymentAsync`. After that, subsequential payments can be performed by merchant with `ExecuteRecurringPaymentAsync`
