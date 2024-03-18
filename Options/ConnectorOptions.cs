@@ -1,24 +1,23 @@
-﻿namespace MerchantHub.Connector.Proxy.Api.Options
+﻿namespace MerchantHub.Connector.Proxy.Api.Options;
+
+/// <summary>
+/// Connector options for otp service
+/// </summary>
+public class ConnectorOptions
 {
+    private string _url = "https://api.maibmerchants.md";
+
     /// <summary>
-    /// Connector options for otp service
+    /// The URL address of the service.
     /// </summary>
-    public class ConnectorOptions
+    public string Url
     {
-        private string _url;
-
-        /// <summary>
-        /// The URL address of the service.
-        /// </summary>
-        public string Url
-        {
-            get => _url;
-            set => _url = value.TrimEnd('/');
-        }
-
-        /// <summary>
-        /// How long to wait, in milliseconds, for the Connector before failing.
-        /// </summary>
-        public int RequestTimeoutMs { get; set; } = 10000;
+        get => _url;
+        set => _url = value.TrimEnd('/');
     }
+
+    /// <summary>
+    /// How long to wait, in milliseconds, for the Connector before failing.
+    /// </summary>
+    public int RequestTimeoutMs { get; set; } = 10000;
 }

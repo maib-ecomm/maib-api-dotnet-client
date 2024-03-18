@@ -1,27 +1,27 @@
 ﻿using System;
 
-namespace MerchantHub.Connector.Proxy.Api.Exceptions
+namespace MerchantHub.Connector.Proxy.Api.Exceptions;
+
+/// <summary>
+/// Thrown when the response returned from an endpoint cannot be parsed as a valid response.
+/// The usually means the endpoint URL does not point to an service.
+/// </summary>
+public class InvalidResponseException : Exception
 {
     /// <summary>
-    /// Thrown when the response returned from an endpoint cannot be parsed as a valid response.
-    /// The usually means the endpoint URL does not point to an service.
+    /// Gets the response text.
     /// </summary>
-    public class InvalidResponseException : Exception
+    public string ResponseText { get; }
+
+    /// <summary>
+    /// Gets the HTTP status code.
+    /// </summary>
+    public int HttpStatusCode { get; }
+
+    internal InvalidResponseException(int httpStatusCode, string responseText, Exception? innerException = null)
+        : base($"Unexpected response (HTTP {httpStatusCode}): {responseText}", innerException)
     {
-        /// <summary>
-        /// Gets the response text.
-        /// </summary>
-        public string ResponseText { get; }
-
-        /// <summary>
-        /// Gets the HTTP status code.
-        /// </summary>
-        public int HttpStatusCode { get; internal set; }
-
-        internal InvalidResponseException(string responseText, Exception innerException)
-            : base("Unexpected response text: " + responseText, innerException)
-        {
-            ResponseText = responseText;
-        }
+        HttpStatusCode = httpStatusCode;
+        ResponseText = responseText;
     }
 }

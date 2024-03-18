@@ -17,18 +17,17 @@ CONTENTS OF THIS FILE
 INTRODUCTION
 ============
 
-The MAIB api .NET client is used to easily integrate the MAIB MerchantProxy into your project.
-Based on the .NET Core Libraries to connect and process the requests with the Bank server.
+The MAIB api .NET client is a .NET Core based library used to easily integrate the MAIB MerchantProxy into your project.
 
-The MAIB api .NET client has 4 ways of payment.
- * Direct payment (`PayAsync`). When the client's money transfers on the merchant account instantly when the user do the payment. This way is recommended use.
- * 2 step payment (`HoldDmsPaymentAsync`, `CompleteDmsPaymentAsync`). This type of transaction is executed in two steps. First payment needs to be initiated with `HoldDmsPaymentAsync` then completed with `CompleteDmsPaymentAsync`.
- * One-Click payment (`SaveOneClickPaymentAsync`, `ExecuteOneClickPaymentAsync`). This type of transaction allow user to save the card for latter use. First user need to save the card by `SaveOneClickPaymentAsync` on check-out form should select save card then user cand execute oneclick payments by `ExecuteOneClickPaymentAsync` with the `BillerId` property.
- * Recurring payment(`SaveRecurringPaymentAsync`, `ExecuteRecurringPaymentAsync`). This type is similar to OneClick transactions except the fact that user don't have to check anything on check-out form but the order of execution should be the following first `SaveRecurringPaymentAsync` then for later transactions `ExecuteRecurringPaymentAsync` with the `BillerId`.
- * Refund payment (`RefundPaymentAsync`). This is intended for refunding all type of transactions.
- * Delete card (`DeleteBillerAsync`). This is intended for deleting cards saved for oneclick transactions.
+The MAIB api .NET client has 4 payment methods.
+ * Direct payment (`PayAsync`) - the customer's money is transferred to the merchant account instantly when the customer makes a payment. This method is preferred.
+ * 2 step payment (`HoldDmsPaymentAsync`, `CompleteDmsPaymentAsync`) - this type of transaction occurs in two stages. The payment must first be initiated using `HoldDmsPaymentAsync` and then completed using `CompleteDmsPaymentAsync`.
+ * Recurring payment(`SaveRecurringPaymentAsync`, `ExecuteRecurringPaymentAsync`) - this type of transaction allows customer to save the card for later use. Transaction must be initiated with `SaveRecurringPaymentAsync`. After that, subsequential payments can be performed by merchant with `ExecuteRecurringPaymentAsync`
+ * One-Click payment (`SaveOneClickPaymentAsync`, `ExecuteOneClickPaymentAsync`) - this type of transaction allows customer to save the card for later use. Transaction must be initiated with `SaveOneClickPaymentAsync`. Then on the check-out form customer should select save card. After that, subsequential payments can be initiated with `ExecuteOneClickPaymentAsync`.
+ * Refund payment (`RefundPaymentAsync`) - this operation is intended for refunding all types of transactions.
+ * Delete card (`DeleteBillerAsync`) - this operation is intended for deleting cards saved for recurring and one-click transactions.
 
- For authentication ther is `GenerateTokenAsync`. 
+ Operation `GenerateTokenAsync` is used to aqcuire access token, used in another operations. 
 
 
 REQUIREMENTS
@@ -55,36 +54,24 @@ dotnet add package MerchantHub.Connector.Proxy.Api --version {latest available v
 BEFORE USAGE
 ============
 
-To initiate an payment you need to obtain the `ProjectId` and `ProjectSecret` in MechantHub.
+To perform any operations with client you need to obtain the `ProjectId` and `ProjectSecret` in MechantHub.
 
 USAGE
 =====
- * Namespace needed to include
+ * Program.cs needs to include
   ```csharp
     using MerchantHub.Connector.Proxy.Api.Extensions;
   ````
- * Register the client first overload
+ * Register the client
   ```csharp
     services.AddMerchantProxyConnector({IConfiguration instance}, {sectionName});
   ````
-   in configuration should have the following section:
+   configuration must contain the following section:
 
    ```csharp
     "sectionName": {
         "Url": "OurApiUrl",
-        "ReqeustTimoutMs": {nr of ms for timeout}
-    }
-  ````
- * Second overload
-  
-  ```csharp
-    services.AddMerchantProxyConnector({IConfiguration instance});
-  ````
-   in configuration should have the following section:
-  ```csharp
-    "MerchantHubProxyApi": {
-        "Url": "OurApiUrl",
-        "ReqeustTimoutMs": {nr of ms for timeout}
+        "RequestTimeoutMs": {nr of ms for timeout}
     }
   ````
   * Dependency injection
@@ -102,7 +89,7 @@ EXAMPLES
 ========
 * Access token generation
 
-```csharo
+```csharp
             var generateTokenRequest = new GenerateTokenRequest
             {
                 ProjectId = "YourProjectId",
@@ -178,7 +165,7 @@ EXAMPLES
 First step
 
 ```csharo
-            var holdRequest = new HoldRequest
+            var holdRequest = new HoldDmsPaymentRequest
             {
                 AccessToken = generateTokenResult.Result.AccessToken,
                 Amount = 10.1m,
@@ -227,8 +214,9 @@ First step
 Second step
 
 ```csharp
-            var completeRequest = new CompleteRequest()
+            var completeRequest = new CompleteDmsPaymentRequest()
             {
+                PayId = holdResult.PayId, // payment id from result of the previous step
                 AccessToken = generateTokenResult.Result.AccessToken,
                 ConfirmAmount = 10.1m,
                 ClientIp = "Your ClientIp",
@@ -262,7 +250,7 @@ Second step
 Save card
 
 ```csharp
-            var saveRequest = new SaveOneClickRequest()
+            var saveRequest = new SaveOneClickPaymentRequest()
             {
                 AccessToken = generateTokenResult.Result.AccessToken,
                 Amount = 10.1m,
@@ -312,7 +300,7 @@ Save card
 
 Execute one-click payments
 ```csharp
-            var executeOneClickRequest = new ExecuteOneClickRequest()
+            var executeOneClickRequest = new ExecuteOneClickPaymentRequest()
             {
                 AccessToken = generateTokenResult.Result.AccessToken,
                 Amount = 10.1m,
@@ -360,7 +348,7 @@ Execute one-click payments
 
 Save recurring
 ```csharp
-            var saveRecurringRequest = new SaveRecurringRequest()
+            var saveRecurringRequest = new SaveRecurringPaymentRequest()
             {
                 AccessToken = generateTokenResult.Result.AccessToken,
                 Amount = 10.1m,
@@ -410,7 +398,7 @@ Save recurring
 
 Execute recurring
 ```csharp
-            var executeRecurringRequest = new ExecuteRecurringRequest()
+            var executeRecurringRequest = new ExecuteRecurringPaymentRequest()
             {
                 AccessToken = generateTokenResult.Result.AccessToken,
                 Amount = 10.1m,
@@ -461,7 +449,7 @@ Execute recurring
 ```
 * Refund payment
 ```csharp
-            var refundRequest = new RefundRequest
+            var refundRequest = new RefundPaymentRequest
             {
                 AccessToken = generateTokenResult.Result.AccessToken,
                 PayId = Guid.NewGuid(), //id of payment which you want to refund
@@ -493,7 +481,7 @@ Execute recurring
 ```
 * Delete biller
 ```csharp
-            var deleteRequest = new DeleteRequest()
+            var deleteRequest = new DeleteBillerRequest()
             {
                 AccessToken = generateTokenResult.Result.AccessToken,
                 BillerId = Guid.NewGuid() //id of biller which you want to delete
@@ -520,7 +508,7 @@ Execute recurring
 
 * Check payment
 ```csharp
-    var checkRequest = new CheckRequest()
+            var checkRequest = new CheckPaymentRequest()
             {
                 AccessToken = generateTokenResult.Result.AccessToken,
                 PayId = Guid.NewGuid() //id of payment which you want to check
@@ -550,7 +538,6 @@ Execute recurring
             var approval = checkPaymentAsync.Result.Approval;
             var currency = checkPaymentAsync.Result.Currency;
             var amount = checkPaymentAsync.Result.Amount;
-            var paymentMethod = checkPaymentAsync.Result.PaymentMethod;
             var clientName = checkPaymentAsync.Result.ClientName;
             var threeDs = checkPaymentAsync.Result.ThreeDs;
             var confirmAmount = checkPaymentAsync.Result.ConfirmAmount;
@@ -586,4 +573,4 @@ Properties
 - Result - holds request response
 - Errors - holds request errors
 
-For more indepth description refer to [Official documentation](https://maib-ecommerce.gitbook.io/ro/)
+For more indepth description refer to [Official documentation](https://docs.maibmerchants.md/)

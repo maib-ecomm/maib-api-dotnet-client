@@ -1,88 +1,165 @@
-﻿using MerchantHub.Connector.Proxy.Api.Endpoints.Auth.Token;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Check;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Delete;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Dms.Complete;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Dms.Hold;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.OneClick.Execute;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.OneClick.Save;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Recurring.SaveRecurring;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Recurring.Template;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Refund;
-using MerchantHub.Connector.Proxy.Api.Endpoints.Transactions.Sms;
-using MerchantHub.Connector.Proxy.Api.Http.Interfaces;
+﻿using MerchantHub.Connector.Proxy.Api.Exceptions;
 using MerchantHub.Connector.Proxy.Api.Models;
+using MerchantHub.Connector.Proxy.Api.Models.Requests;
+using MerchantHub.Connector.Proxy.Api.Models.Responses;
+using System.Net.Http;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Text.Json;
+using MerchantHub.Connector.Proxy.Api.Options;
+using Microsoft.Extensions.Options;
+using System.Net.Http.Headers;
+using MerchantHub.Connector.Proxy.Api.Serialization;
 
-namespace MerchantHub.Connector.Proxy.Api
+namespace MerchantHub.Connector.Proxy.Api;
+
+internal sealed class MerchantHubProxyClient : IMerchantHubProxyClient
 {
-    public sealed class MerchantHubProxyClient : IMerchantHubProxyClient
+    public const string HttpClientName = "MerchantHubProxyClient";
+
+    private readonly IHttpClientFactory _clientFactory;
+    private ConnectorOptions _options;
+
+    public MerchantHubProxyClient(IHttpClientFactory clientFactory, IOptionsMonitor<ConnectorOptions> optionsAccessor)
     {
-        private readonly IEndpointClient _client;
+        _clientFactory = clientFactory;
 
-        public MerchantHubProxyClient(IEndpointClient client)
+        _options = optionsAccessor.CurrentValue;
+        optionsAccessor.OnChange((options, _) => _options = options);
+    }
+
+    public async Task<OperationResult<CheckPaymentResponse?>> CheckPaymentAsync(CheckPaymentRequest request, CancellationToken cancellationToken = default)
+    {
+        return await SendAsync<OperationResult<CheckPaymentResponse?>, CheckPaymentRequest>(request, cancellationToken);
+    }
+
+    public async Task<OperationResult<DeleteBillerResponse?>> DeleteBillerAsync(DeleteBillerRequest request, CancellationToken cancellationToken = default)
+    {
+        return await SendAsync<OperationResult<DeleteBillerResponse?>, DeleteBillerRequest>(request, cancellationToken);
+    }
+
+    public async Task<OperationResult<CompleteDmsPaymentResponse?>> CompleteDmsPaymentAsync(CompleteDmsPaymentRequest request, CancellationToken cancellationToken = default)
+    {
+        return await SendAsync<OperationResult<CompleteDmsPaymentResponse?>, CompleteDmsPaymentRequest>(request,
+            cancellationToken);
+    }
+
+    public async Task<OperationResult<InitPaymentResponse?>> HoldDmsPaymentAsync(HoldDmsPaymentRequest request, CancellationToken cancellationToken = default)
+    {
+        return await SendAsync<OperationResult<InitPaymentResponse?>, HoldDmsPaymentRequest>(request, cancellationToken);
+    }
+
+    public async Task<OperationResult<InitPaymentResponse?>> ExecuteOneClickPaymentAsync(ExecuteOneClickPaymentRequest request, CancellationToken cancellationToken = default)
+    {
+        return await SendAsync<OperationResult<InitPaymentResponse?>, ExecuteOneClickPaymentRequest>(request,
+            cancellationToken);
+    }
+
+    public async Task<OperationResult<InitPaymentResponse?>> SaveOneClickPaymentAsync(SaveOneClickPaymentRequest request, CancellationToken cancellationToken = default)
+    {
+        return await SendAsync<OperationResult<InitPaymentResponse?>, SaveOneClickPaymentRequest>(request,
+            cancellationToken);
+    }
+
+    public async Task<OperationResult<InitPaymentResponse?>> SaveRecurringPaymentAsync(SaveRecurringPaymentRequest request, CancellationToken cancellationToken = default)
+    {
+        return await SendAsync<OperationResult<InitPaymentResponse?>, SaveRecurringPaymentRequest>(request,
+            cancellationToken);
+    }
+
+    public async Task<OperationResult<ExecuteRecurringPaymentResponse?>> ExecuteRecurringPaymentAsync(ExecuteRecurringPaymentRequest recurring, CancellationToken cancellationToken = default)
+    {
+        return await SendAsync<OperationResult<ExecuteRecurringPaymentResponse?>, ExecuteRecurringPaymentRequest>(recurring,
+            cancellationToken);
+    }
+
+    public async Task<OperationResult<RefundPaymentResponse?>> RefundPaymentAsync(RefundPaymentRequest request, CancellationToken cancellationToken = default)
+    {
+        return await SendAsync<OperationResult<RefundPaymentResponse?>, RefundPaymentRequest>(request, cancellationToken);
+    }
+
+    public async Task<OperationResult<InitPaymentResponse?>> PayAsync(PayRequest request, CancellationToken cancellationToken = default)
+    {
+        return await SendAsync<OperationResult<InitPaymentResponse?>, PayRequest>(request, cancellationToken);
+    }
+
+    public async Task<OperationResult<GenerateTokenResponse?>> GenerateTokenAsync(GenerateTokenRequest request, CancellationToken cancellationToken = default)
+    {
+        return await SendAsync<OperationResult<GenerateTokenResponse?>, GenerateTokenRequest>(request, cancellationToken);
+    }
+
+    private async Task<TResponse> SendAsync<TResponse, TRequest>(TRequest requestData,
+        CancellationToken cancellationToken = default)
+        where TRequest : BaseRequest
+    {
+        if (requestData == null)
+            throw new ArgumentNullException(nameof(requestData));
+
+        using HttpRequestMessage requestMessage = requestData.ToHttpRequest(_options.Url);
+
+        if (!string.IsNullOrWhiteSpace(requestData.AccessToken))
         {
-            _client = client;
+            requestMessage.Headers.Authorization = new AuthenticationHeaderValue("Bearer", requestData.AccessToken);
         }
 
-        public async Task<OperationResult<CheckResult?>> CheckPaymentAsync(CheckRequest request, CancellationToken cancellationToken = default)
+        using HttpResponseMessage responseMessage =
+            await SendHttpAsync(requestMessage, cancellationToken: cancellationToken);
+
+        var responseJson = await responseMessage.Content.ReadAsStringAsync();
+        var httpStatusCode = Convert.ToInt32(responseMessage.StatusCode);
+
+        return ParseResponse<TResponse>(httpStatusCode, responseJson);
+    }
+
+    private async Task<HttpResponseMessage> SendHttpAsync(HttpRequestMessage request, CancellationToken cancellationToken = default)
+    {
+        using HttpClient client = CreateClient();
+
+        try
         {
-            return await _client.SendAsync<OperationResult<CheckResult?>, CheckRequest>(request, cancellationToken);
+            return await client.SendAsync(request, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new NotReachableException(
+                $"Could not make request to service at '{_options.Url}'. " +
+                $"The provided base url may be incorrect or there may be a firewall blocking the port. Request timeout = {client.Timeout}",
+                ex);
+        }
+    }
+
+    private HttpClient CreateClient()
+    {
+        HttpClient client = _clientFactory.CreateClient(HttpClientName);
+        client.Timeout = TimeSpan.FromMilliseconds(_options.RequestTimeoutMs);
+
+        return client;
+    }
+
+    private TResponse ParseResponse<TResponse>(int httpStatusCode, string responseJson)
+    {
+        if (httpStatusCode is not (200 or 400 or 401 or 403 or 404 or 409 or 500))
+            throw new InvalidResponseException(httpStatusCode, responseJson);
+        
+        if (string.IsNullOrWhiteSpace(responseJson))
+        {
+            throw new StatusCodeException(httpStatusCode);
         }
 
-        public async Task<OperationResult<DeleteResult?>> DeleteBillerAsync(DeleteRequest request, CancellationToken cancellationToken = default)
+        try
         {
-            return await _client.SendAsync<OperationResult<DeleteResult?>, DeleteRequest>(request, cancellationToken);
-        }
+            TResponse? result = JsonSerializer.Deserialize<TResponse>(responseJson,
+                ConnectorJsonSerializerContext.Default.Options);
 
-        public async Task<OperationResult<CompleteResult?>> CompleteDmsPaymentAsync(CompleteRequest request, CancellationToken cancellationToken = default)
-        {
-            return await _client.SendAsync<OperationResult<CompleteResult?>, CompleteRequest>(request,
-                cancellationToken);
-        }
+            if (result == null)
+                throw new InvalidResponseException(httpStatusCode, responseJson);
 
-        public async Task<OperationResult<BaseResult?>> HoldDmsPaymentAsync(HoldRequest request, CancellationToken cancellationToken = default)
-        {
-            return await _client.SendAsync<OperationResult<BaseResult?>, HoldRequest>(request, cancellationToken);
+            return result;
         }
-
-        public async Task<OperationResult<BaseResult?>> ExecuteOneClickPaymentAsync(ExecuteOneClickRequest request, CancellationToken cancellationToken = default)
+        catch (JsonException ex)
         {
-            return await _client.SendAsync<OperationResult<BaseResult?>, ExecuteOneClickRequest>(request,
-                cancellationToken);
-        }
-
-        public async Task<OperationResult<BaseResult?>> SaveOneClickPaymentAsync(SaveOneClickRequest request, CancellationToken cancellationToken = default)
-        {
-            return await _client.SendAsync<OperationResult<BaseResult?>, SaveOneClickRequest>(request,
-                cancellationToken);
-        }
-
-        public async Task<OperationResult<BaseResult?>> SaveRecurringPaymentAsync(SaveRecurringRequest request, CancellationToken cancellationToken = default)
-        {
-            return await _client.SendAsync<OperationResult<BaseResult?>, SaveRecurringRequest>(request,
-                cancellationToken);
-        }
-
-        public async Task<OperationResult<ExecuteRecurringResult?>> ExecuteRecurringPaymentAsync(ExecuteRecurringRequest recurring, CancellationToken cancellationToken = default)
-        {
-            return await _client.SendAsync<OperationResult<ExecuteRecurringResult?>, ExecuteRecurringRequest>(recurring,
-                cancellationToken);
-        }
-
-        public async Task<OperationResult<RefundResult?>> RefundPaymentAsync(RefundRequest request, CancellationToken cancellationToken = default)
-        {
-            return await _client.SendAsync<OperationResult<RefundResult?>, RefundRequest>(request, cancellationToken);
-        }
-
-        public async Task<OperationResult<BaseResult?>> PayAsync(PayRequest request, CancellationToken cancellationToken = default)
-        {
-            return await _client.SendAsync<OperationResult<BaseResult?>, PayRequest>(request, cancellationToken);
-        }
-
-        public async Task<OperationResult<GenerateTokenResult?>> GenerateTokenAsync(GenerateTokenRequest request, CancellationToken cancellationToken = default)
-        {
-            return await _client.SendAsync<OperationResult<GenerateTokenResult?>, GenerateTokenRequest>(request, cancellationToken);
+            throw new InvalidResponseException(httpStatusCode, responseJson, ex);
         }
     }
 }

@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel;
+// ReSharper disable InconsistentNaming
 
-namespace MerchantHub.Connector.Proxy.Api.Models.Enums
+namespace MerchantHub.Connector.Proxy.Api.Models.Enums;
+
+public enum Currency
 {
-    public enum Currency
-    {
-        [Description("MDL")]
-        MDL = 498,
-        [Description("USD")]
-        USD = 840,
-        [Description("EUR")]
-        EUR = 978,
-    }
+    [Description("MDL")]
+    MDL = 498,
+    [Description("USD")]
+    USD = 840,
+    [Description("EUR")]
+    EUR = 978,
 }
