@@ -1,4 +1,4 @@
-# MAIB api .NET client
+# maib api .NET client
 [![N|Solid](https://www.maib.md/images/logo.svg)](https://www.maib.md)
 
 
@@ -17,7 +17,7 @@ CONTENTS OF THIS FILE
 INTRODUCTION
 ============
 
-The MAIB api .NET client is a .NET Core based library used to easily integrate the MAIB MerchantProxy into your project.
+The maib api .NET client is a .NET Core based library used to easily integrate the maib ecomm API into your project.
 
 The MAIB api .NET client has 4 payment methods.
  * Direct payment (`PayAsync`) - the customer's money is transferred to the merchant account instantly when the customer makes a payment. This method is preferred.
@@ -41,30 +41,30 @@ INSTALLATION
 
  * Via terminal
  ```bash
-dotnet add package MerchantHub.Connector.Proxy.Api --version {latest available version}
+dotnet add package Maib.Ecomm.Api.Connector --version {latest available version}
  ```
 
 * Paste into *.csproj
 
 ```xml
-<PackageReference Include="MerchantHub.Connector.Proxy.Api" Version="{latest available version}" />
+<PackageReference Include="Maib.Ecomm.Api.Connector" Version="{latest available version}" />
 ```
 
 
 BEFORE USAGE
 ============
 
-To perform any operations with client you need to obtain the `ProjectId` and `ProjectSecret` in MechantHub.
+To perform any operations with client you need to obtain the `ProjectId` and `ProjectSecret` in MaibMerchants.
 
 USAGE
 =====
  * Program.cs needs to include
   ```csharp
-    using MerchantHub.Connector.Proxy.Api.Extensions;
+    using Maib.Ecomm.Api.Connector.Extensions;
   ````
  * Register the client
   ```csharp
-    services.AddMerchantProxyConnector({IConfiguration instance}, {sectionName});
+    services.AddMaibEcommConnector({IConfiguration instance}, {sectionName});
   ````
    configuration must contain the following section:
 
@@ -78,9 +78,9 @@ USAGE
   ```csharp
 
     public class YourService{
-        private readonly IMerchantHubProxyClient _merchantClient;
-        public YourService(IMerchantHubProxyClient merchantClient){
-            _merchantClient = merchantClient;
+        private readonly IMaibEcommApiClient _client;
+        public YourService(IMaibEcommApiClient client){
+            _client = client;
         }
     }
   ````
@@ -96,7 +96,7 @@ EXAMPLES
                 ProjectSecret = "YourProjectSecret"
             };
 
-            var generateTokenResult = await _merchantHubProxyClient.GenerateTokenAsync(generateTokenRequest, cancellationToken);
+            var generateTokenResult = await _client.GenerateTokenAsync(generateTokenRequest, cancellationToken);
 
             if (!generateTokenResult.Ok)
             {
@@ -140,7 +140,7 @@ EXAMPLES
                     }
                 }
             };
-            var payResult = await _merchantHubProxyClient.PayAsync(payRequest, cancellationToken);
+            var payResult = await _client.PayAsync(payRequest, cancellationToken);
             if (!payResult.Ok)
             {
                 //request failed
@@ -192,7 +192,7 @@ First step
                     }
                 }
             };
-            var holdResult = await _merchantHubProxyClient.HoldDmsPaymentAsync(holdRequest, cancellationToken);
+            var holdResult = await _client.HoldDmsPaymentAsync(holdRequest, cancellationToken);
             if (!holdResult.Ok)
             {
                 //request failed
@@ -221,7 +221,7 @@ Second step
                 ConfirmAmount = 10.1m,
                 ClientIp = "Your ClientIp",
             };
-            var completeResult = await _merchantHubProxyClient.CompleteDmsPaymentAsync(completeRequest, cancellationToken);
+            var completeResult = await _client.CompleteDmsPaymentAsync(completeRequest, cancellationToken);
             if (!completeResult.Ok)
             {
                 //request failed
@@ -278,7 +278,7 @@ Save card
                 },
                 BillerExpiry = "Your card expiration date"
             };
-            var saveResult = await _merchantHubProxyClient.SaveOneClickPaymentAsync(saveRequest, cancellationToken);
+            var saveResult = await _client.SaveOneClickPaymentAsync(saveRequest, cancellationToken);
             if (!saveResult.Ok)
             {
                 //request failed
@@ -324,7 +324,7 @@ Execute one-click payments
                 },
                 BillerId = Guid.NewGuid()//this is sent to the callback url that was setted on save one click request in case if the user selected savecard on checkout form
             };
-            var executeOneClickResult = await _merchantHubProxyClient.ExecuteOneClickPaymentAsync(executeOneClickRequest, cancellationToken);
+            var executeOneClickResult = await _client.ExecuteOneClickPaymentAsync(executeOneClickRequest, cancellationToken);
             if (!executeOneClickResult.Ok)
             {
                 //request failed
@@ -376,7 +376,7 @@ Save recurring
                 },
                 BillerExpiry = "Your card expiration date"
             };
-            var saveRecurringPaymentAsync = await _merchantHubProxyClient.SaveRecurringPaymentAsync(saveRecurringRequest, cancellationToken);
+            var saveRecurringPaymentAsync = await _client.SaveRecurringPaymentAsync(saveRecurringRequest, cancellationToken);
             if (!saveRecurringPaymentAsync.Ok)
             {
                 //request failed
@@ -418,7 +418,7 @@ Execute recurring
                 },
                 BillerId = Guid.NewGuid()//this is sent to the callback url that was setted on save one click request in case if the user selected savecard on checkout form
             };
-            var executeRecurrinResult = await _merchantHubProxyClient.ExecuteRecurringPaymentAsync(executeRecurringRequest, cancellationToken);
+            var executeRecurrinResult = await _client.ExecuteRecurringPaymentAsync(executeRecurringRequest, cancellationToken);
             if (!executeRecurrinResult.Ok)
             {
                 //request failed
@@ -455,7 +455,7 @@ Execute recurring
                 PayId = Guid.NewGuid(), //id of payment which you want to refund
                 RefundAmount = 10m //should be smaller or equal to the amount you payed for this pay Id
             };
-            var refundResult = await _merchantHubProxyClient.RefundPaymentAsync(refundRequest, cancellationToken);
+            var refundResult = await _client.RefundPaymentAsync(refundRequest, cancellationToken);
             if (!refundResult.Ok)
             {
                 //request failed
@@ -486,7 +486,7 @@ Execute recurring
                 AccessToken = generateTokenResult.Result.AccessToken,
                 BillerId = Guid.NewGuid() //id of biller which you want to delete
             };
-            var deleteBillerAsync = await _merchantHubProxyClient.DeleteBillerAsync(deleteRequest, cancellationToken);
+            var deleteBillerAsync = await _client.DeleteBillerAsync(deleteRequest, cancellationToken);
             if (!deleteBillerAsync.Ok)
             {
                 //request failed
@@ -513,7 +513,7 @@ Execute recurring
                 AccessToken = generateTokenResult.Result.AccessToken,
                 PayId = Guid.NewGuid() //id of payment which you want to check
             };
-            var checkPaymentAsync = await _merchantHubProxyClient.CheckPaymentAsync(checkRequest, cancellationToken);
+            var checkPaymentAsync = await _client.CheckPaymentAsync(checkRequest, cancellationToken);
             if (!checkPaymentAsync.Ok)
             {
                 //request failed

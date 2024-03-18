@@ -3,9 +3,9 @@ using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using ConnectorJsonSerializerContext = MerchantHub.Connector.Proxy.Api.Serialization.ConnectorJsonSerializerContext;
+using Maib.Ecomm.Api.Connector.Serialization;
 
-namespace MerchantHub.Connector.Proxy.Api.Models.Requests;
+namespace Maib.Ecomm.Api.Connector.Models.Requests;
 
 /// <summary>
 /// Represents the base request.

@@ -1,4 +1,4 @@
-﻿namespace MerchantHub.Connector.Proxy.Api.Options;
+﻿namespace Maib.Ecomm.Api.Connector.Options;
 
 /// <summary>
 /// Connector options for otp service

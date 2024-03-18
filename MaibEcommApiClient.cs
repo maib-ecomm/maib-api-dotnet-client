@@ -1,27 +1,27 @@
-﻿using MerchantHub.Connector.Proxy.Api.Exceptions;
-using MerchantHub.Connector.Proxy.Api.Models;
-using MerchantHub.Connector.Proxy.Api.Models.Requests;
-using MerchantHub.Connector.Proxy.Api.Models.Responses;
+﻿using System;
 using System.Net.Http;
-using System;
+using System.Net.Http.Headers;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Text.Json;
-using MerchantHub.Connector.Proxy.Api.Options;
+using Maib.Ecomm.Api.Connector.Exceptions;
+using Maib.Ecomm.Api.Connector.Models;
+using Maib.Ecomm.Api.Connector.Models.Requests;
+using Maib.Ecomm.Api.Connector.Models.Responses;
+using Maib.Ecomm.Api.Connector.Options;
+using Maib.Ecomm.Api.Connector.Serialization;
 using Microsoft.Extensions.Options;
-using System.Net.Http.Headers;
-using MerchantHub.Connector.Proxy.Api.Serialization;
 
-namespace MerchantHub.Connector.Proxy.Api;
+namespace Maib.Ecomm.Api.Connector;
 
-internal sealed class MerchantHubProxyClient : IMerchantHubProxyClient
+internal sealed class MaibEcommApiClient : IMaibEcommApiClient
 {
-    public const string HttpClientName = "MerchantHubProxyClient";
+    public const string HttpClientName = "MaibEcommApiClient";
 
     private readonly IHttpClientFactory _clientFactory;
     private ConnectorOptions _options;
 
-    public MerchantHubProxyClient(IHttpClientFactory clientFactory, IOptionsMonitor<ConnectorOptions> optionsAccessor)
+    public MaibEcommApiClient(IHttpClientFactory clientFactory, IOptionsMonitor<ConnectorOptions> optionsAccessor)
     {
         _clientFactory = clientFactory;
 

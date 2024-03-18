@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MerchantHub.Connector.Proxy.Api.Exceptions;
+namespace Maib.Ecomm.Api.Connector.Exceptions;
 
 /// <summary>
 /// Thrown when a connection to the service cannot be made. Could have multiple causes.

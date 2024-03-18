@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json.Serialization;
 
-namespace MerchantHub.Connector.Proxy.Api.Models;
+namespace Maib.Ecomm.Api.Connector.Models;
 /// <summary>
 ///     Any action result
 /// </summary>

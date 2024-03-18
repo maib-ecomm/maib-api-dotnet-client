@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace MerchantHub.Connector.Proxy.Api.Models;
+namespace Maib.Ecomm.Api.Connector.Models;
 
 public class OperationError
 {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 
-namespace MerchantHub.Connector.Proxy.Api.Models.Requests;
+namespace Maib.Ecomm.Api.Connector.Models.Requests;
 
 public sealed class CheckPaymentRequest : BaseRequest
 {

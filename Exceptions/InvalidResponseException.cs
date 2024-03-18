@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MerchantHub.Connector.Proxy.Api.Exceptions;
+namespace Maib.Ecomm.Api.Connector.Exceptions;
 
 /// <summary>
 /// Thrown when the response returned from an endpoint cannot be parsed as a valid response.

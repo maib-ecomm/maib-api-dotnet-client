@@ -1,12 +1,12 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using MerchantHub.Connector.Proxy.Api.Models;
-using MerchantHub.Connector.Proxy.Api.Models.Requests;
-using MerchantHub.Connector.Proxy.Api.Models.Responses;
+using Maib.Ecomm.Api.Connector.Models;
+using Maib.Ecomm.Api.Connector.Models.Requests;
+using Maib.Ecomm.Api.Connector.Models.Responses;
 
-namespace MerchantHub.Connector.Proxy.Api;
+namespace Maib.Ecomm.Api.Connector;
 
-public interface IMerchantHubProxyClient
+public interface IMaibEcommApiClient
 {
     /// <summary>
     /// Check payment by payment id

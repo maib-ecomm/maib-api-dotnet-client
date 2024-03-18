@@ -1,7 +1,8 @@
 ﻿using System.ComponentModel;
+
 // ReSharper disable InconsistentNaming
 
-namespace MerchantHub.Connector.Proxy.Api.Models.Enums;
+namespace Maib.Ecomm.Api.Connector.Models.Enums;
 
 public enum Currency
 {

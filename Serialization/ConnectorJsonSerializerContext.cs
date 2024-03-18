@@ -1,11 +1,10 @@
-﻿using System;
-using System.Text.Json.Serialization;
-using MerchantHub.Connector.Proxy.Api.Models;
-using MerchantHub.Connector.Proxy.Api.Models.Enums;
-using MerchantHub.Connector.Proxy.Api.Models.Requests;
-using MerchantHub.Connector.Proxy.Api.Models.Responses;
+﻿using System.Text.Json.Serialization;
+using Maib.Ecomm.Api.Connector.Models;
+using Maib.Ecomm.Api.Connector.Models.Enums;
+using Maib.Ecomm.Api.Connector.Models.Requests;
+using Maib.Ecomm.Api.Connector.Models.Responses;
 
-namespace MerchantHub.Connector.Proxy.Api.Serialization;
+namespace Maib.Ecomm.Api.Connector.Serialization;
 
 [JsonSourceGenerationOptions(
     DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,

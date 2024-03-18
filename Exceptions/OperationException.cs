@@ -1,7 +1,7 @@
 ﻿using System;
-using MerchantHub.Connector.Proxy.Api.Models;
+using Maib.Ecomm.Api.Connector.Models;
 
-namespace MerchantHub.Connector.Proxy.Api.Exceptions;
+namespace Maib.Ecomm.Api.Connector.Exceptions;
 
 /// <summary>
 /// Thrown when service encounters one or more errors. It may be a request validation error or another business condition.

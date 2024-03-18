@@ -3,25 +3,25 @@
 	<PropertyGroup>
 		<TargetFramework>netstandard2.1</TargetFramework>
 		<Nullable>enable</Nullable>
-		<NoWarn>CS8618;CS1591</NoWarn>
-		<PackageId>MerchantHub.Connector.Proxy.Api</PackageId>
-		<Title>MerchantHub Connector Proxy Api</Title>
-		<Version>1.1.0</Version>
-		<Copyright>MAIB</Copyright>
+		<LangVersion>latest</LangVersion>
+		<NoWarn>CS1591</NoWarn>
+		<PackageId>Maib.Ecomm.Api.Connector</PackageId>
+		<Title>maib ecommerce API connector</Title>
+		<Version>2.0.0</Version>
+		<Copyright>maib</Copyright>
 		<PackageTags>maib</PackageTags>
-		<Authors>Ursu Nicolae</Authors>
-		<Company>MAIB</Company>
+		<Authors>Ursu Nicolae, Lopatchin Vladimir</Authors>
+		<Company>maib</Company>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageIcon>maib-logo.png</PackageIcon>
 		<GenerateDocumentationFile>false</GenerateDocumentationFile>
-		<Description>Connector for MerchantHub proxy apy</Description>
-		<PackageProjectUrl>https://azdevops.maib.local/Development/NugetLibraries</PackageProjectUrl>
-		<RepositoryUrl>https://azdevops.maib.local/Development/Common/_git/MerchantHub.Connector.Proxy.Api</RepositoryUrl>
-		<LangVersion>latest</LangVersion>
+		<Description>Connector for maib ecommerce API</Description>
+		<PackageProjectUrl>https://github.com/maib-ecomm/maib-api-dotnet-client</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/maib-ecomm/maib-api-dotnet-client</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Exceptions\" />
+	  <None Remove="PUBLISH.bat" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -29,8 +29,8 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
 		<PackageReference Include="Nullable" Version="1.3.1">
-		  <PrivateAssets>all</PrivateAssets>
-		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="System.Text.Json" Version="8.0.3" />
 	</ItemGroup>

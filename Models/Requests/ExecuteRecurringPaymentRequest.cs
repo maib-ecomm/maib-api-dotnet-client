@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using MerchantHub.Connector.Proxy.Api.Models.Enums;
+using Maib.Ecomm.Api.Connector.Models.Enums;
 
-namespace MerchantHub.Connector.Proxy.Api.Models.Requests;
+namespace Maib.Ecomm.Api.Connector.Models.Requests;
 
 public sealed class ExecuteRecurringPaymentRequest : BaseRequest
 {

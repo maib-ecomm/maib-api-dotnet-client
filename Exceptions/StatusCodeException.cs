@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MerchantHub.Connector.Proxy.Api.Exceptions;
+namespace Maib.Ecomm.Api.Connector.Exceptions;
 
 /// <summary>
 /// Thrown when the service is reachable, but the response status code was not 200.

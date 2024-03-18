@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace MerchantHub.Connector.Proxy.Api.Models.Requests;
+namespace Maib.Ecomm.Api.Connector.Models.Requests;
 
 public sealed class GenerateTokenRequest : BaseRequest
 {
