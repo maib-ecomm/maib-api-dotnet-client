@@ -562,7 +562,6 @@ All requests return following result:
 {
   "Result": {},
   "Ok": bool,
-  "OperationId": uuid,
   "Errors": []
 }
 ````
