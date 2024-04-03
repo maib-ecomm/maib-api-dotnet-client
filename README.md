@@ -1,6 +1,7 @@
 # maib api .NET client
 [![N|Solid](https://www.maib.md/images/logo.svg)](https://www.maib.md)
 
+miab e-commerce API docs: [https://docs.maibmerchants.md](https://docs.maibmerchants.md)
 
 CONTENTS OF THIS FILE
 =====================
@@ -571,5 +572,3 @@ Properties
 - OperationId - returns operation id needed for debuging purposes and logs
 - Result - holds request response
 - Errors - holds request errors
-
-For more indepth description refer to [Official documentation](https://docs.maibmerchants.md/)
