@@ -1,7 +1,7 @@
 # maib api .NET client
 [![N|Solid](https://www.maib.md/images/logo.svg)](https://www.maib.md)
 
-miab e-commerce API docs: [https://docs.maibmerchants.md](https://docs.maibmerchants.md)
+**maib** e-commerce API docs: [https://docs.maibmerchants.md](https://docs.maibmerchants.md)
 
 CONTENTS OF THIS FILE
 =====================
